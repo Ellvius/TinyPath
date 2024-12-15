@@ -1,8 +1,27 @@
-# React + Vite
+# 🔗 **TinyPath - URL Shortener Web App**
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+---
 
-Currently, two official plugins are available:
+## 🚀 **Overview**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+**TinyPath** is a fast and reliable URL shortener web application. With this service, users can easily shorten long URLs into short, shareable links.
+
+### 🔗 Links
+
+- **Backend URL:** [https://tinypath-r207.onrender.com](https://tinypath-r207.onrender.com)
+
+---
+
+## 📜 **Features**
+
+- **URL Shortening:** Instantly shorten long URLs.
+
+---
+
+## 🛠️ **Tech Stack**
+
+- **Backend:** Node.js, Express.js (Render)
+- **Database:** PostgreSQL
+
+---
+

@@ -13,7 +13,6 @@ export const createUrlTable = async () => {
 
     try {
         await pool.query(query);
-        console.log('urls table created successfully. ');
     } catch (err) {
         console.error('Error creating urls table ', err );
     }
@@ -47,4 +46,11 @@ export const increaseHitCount = async (shortUrl) => {
 
     const result = await pool.query(query, [shortUrl]);
     return result.rows[0].hit_count;
+}
+
+export const getExistingLongUrl = async (longUrl) => {
+    const query = `SELECT * FROM urls WHERE long_url = $1`;
+
+    const result = await pool.query(query, [longUrl]);
+    return result;
 }

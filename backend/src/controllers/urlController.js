@@ -41,7 +41,7 @@ export const redirectToLongUrl = async (req, res) => {
 };
 
 export const getUrlDetails = async (req, res) => {
-  const { url } = req.params;
+  const  url  = decodeURIComponent(req.params.url);
   console.log(url);
 
   try {

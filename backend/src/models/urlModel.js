@@ -7,8 +7,11 @@ export const createUrlTable = async () => {
             long_url TEXT NOT NULL,
             short_url TEXT NOT NULL UNIQUE,
             hit_count INT DEFAULT 0,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            request_count INTEGER DEFAULT 0,
+            last_request_time TIMESTAMP DEFAULT NOW()
         );
+
     `;
 
     try {

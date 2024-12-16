@@ -1,4 +1,4 @@
-import { insertUrl, getShortUrl, increaseHitCount, getExistingLongUrl } from '../models/urlModel.js';
+import { insertUrl, getShortUrl, increaseHitCount, getExistingLongUrl, fetchTopUrls } from '../models/urlModel.js';
 import { generateShortUrl } from '../utils/generateShortUrl.js';
 
 export const shortenUrl = async (req, res) => {
@@ -39,3 +39,74 @@ export const redirectToLongUrl = async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+
+export const getUrlDetails = async (req, res) => {
+  const { url } = req.params;
+  console.log(url);
+
+  try {
+    const isShortUrl = url.startsWith(process.env.HOST_URL);
+
+    if (isShortUrl) {
+      const shortUrl = url.replace(process.env.HOST_URL, '').replace('/', '');
+
+      const shortUrlData = await getShortUrl(shortUrl);
+
+      if (!shortUrlData) {
+        return res.status(404).json({ error: 'Short URL not found' });
+      }
+
+      return res.status(200).json({
+        longUrl: shortUrlData.long_url,
+        shortUrl: `${process.env.HOST_URL}/${shortUrl}`,
+        hitCount: shortUrlData.hit_count,
+      });
+    } else {
+      const longUrlData = await getExistingLongUrl(url);
+
+      if (!longUrlData || longUrlData.rows.length === 0) {
+        return res.status(404).json({ error: 'Long URL not found' });
+      }
+
+      return res.status(200).json({
+        longUrl: url,
+        shortUrl: `${process.env.HOST_URL}/${longUrlData.rows[0].short_url}`,
+        hitCount: longUrlData.rows[0].hit_count,
+      });
+    }
+  } catch (err) {
+    console.error('Error fetching URL details:', err.message);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+export const getTopUrls = async (req, res) => {
+  const { number } = req.params;
+
+  try {
+    const topNumber = parseInt(number, 10);
+    if (isNaN(topNumber) || topNumber <= 0) {
+      return res.status(400).json({ error: 'Invalid number parameter. Must be a positive integer.' });
+    }
+
+    const topUrls = await fetchTopUrls(topNumber);
+
+    if (topUrls.length === 0) {
+      return res.status(404).json({ error: 'No URLs found.' });
+    }
+
+    const response = topUrls.map((url, index) => ({
+      rank: index + 1,
+      shortUrl: `${process.env.HOST_URL}/${url.short_url}`,
+      longUrl: url.long_url,
+      hitCount: url.hit_count,
+    }));
+
+    res.status(200).json(response);
+  } catch (err) {
+    console.error('Error fetching top URLs:', err.message);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+

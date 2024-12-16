@@ -54,3 +54,17 @@ export const getExistingLongUrl = async (longUrl) => {
     const result = await pool.query(query, [longUrl]);
     return result;
 }
+
+export const fetchTopUrls = async (topNumber) => {
+    try {
+      const result = await pool.query(
+        'SELECT short_url, long_url, hit_count FROM urls ORDER BY hit_count DESC LIMIT $1',
+        [topNumber]
+      );
+      return result.rows;
+    } catch (err) {
+      console.error('Error fetching top URLs:', err.message);
+      return [];
+    }
+  };
+  

@@ -34,7 +34,7 @@ export const redirectToLongUrl = async (req, res) => {
       return res.redirect(process.env.REDIRECT_SITE);
     }
 
-    console.log(`Redirected short URL (${shortUrl}) to long URL (${longUrl})`);
+    console.log(`Redirected short URL (${shortUrl}) to long URL (${urlData.long_url})`);
     res.redirect(urlData.long_url);
   } catch (err) {
     console.error('Error redirecting:', err.message);

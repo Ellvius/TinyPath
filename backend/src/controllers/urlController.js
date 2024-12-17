@@ -58,7 +58,7 @@ export const getUrlDetails = async (req, res) => {
         return res.status(404).json({ error: 'Short URL not found' });
       }
 
-      console.log(`Details fetched for URL: ${url}. Total hits: ${hitCount}`);
+      console.log(`Details fetched for URL: ${url}. Total hits: ${shortUrlData.hit_count}`);
       return res.status(200).json({
         longUrl: shortUrlData.long_url,
         shortUrl: `${process.env.HOST_URL}/${shortUrl}`,

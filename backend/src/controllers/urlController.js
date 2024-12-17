@@ -100,7 +100,7 @@ export const getTopUrls = async (req, res) => {
 
     const response = topUrls.map((url, index) => ({
       rank: index + 1,
-      shortUrl: `${process.env.HOST_URL}/${url.short_url}`,
+      shortUrl: `${process.env.HOST_URL}/redirect/${url.short_url}`,
       longUrl: url.long_url,
       hitCount: url.hit_count,
     }));

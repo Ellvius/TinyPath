@@ -47,10 +47,10 @@ export const getUrlDetails = async (req, res) => {
   console.log(url);
 
   try {
-    const isShortUrl = url.startsWith(process.env.HOST_URL);
+    const isShortUrl = url.startsWith(process.env.HOST_URL+"/redirect/");
 
     if (isShortUrl) {
-      const shortUrl = url.replace(process.env.HOST_URL, '').replace('/', '');
+      const shortUrl = url.replace(process.env.HOST_URL+"/redirect/", '');
 
       const shortUrlData = await getShortUrl(shortUrl);
 

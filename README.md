@@ -1,5 +1,21 @@
 # 🔗 **TinyPath - URL Shortener Web App**
 
+## 📖 **Table of Contents**
+1. [Overview](#🚀-overview)
+2. [Features](#📜-features)
+3. [Tech Stack](#🛠️-tech-stack)
+4. [Backend URL](#🚀-backend-url)
+5. [Frontend URL](#🌐-frontend-url)
+6. [API Documentation with Examples](#📄-api-documentation-with-examples)
+    - [POST /shorten](#1-post-shorten)
+    - [GET /redirect/:shortUrl](#2-get-redirectshorturl)
+    - [GET /details/:url](#3-get-detailsurl)
+    - [GET /top/:number](#4-get-topnumber)
+7. [Running the Project Locally](#🛠️-running-the-project-locally)
+8. [Special Features](#💡-special-features)
+
+
+
 ## 🚀 **Overview**
 
 **TinyPath** is a fast and reliable URL shortener web application. This service allows users to transform long, cumbersome URLs into short, shareable links with added analytics and monetization features.
@@ -18,13 +34,18 @@
 
 ## 🛠️ **Tech Stack**
 
-- **Backend:** Node.js, Express.js
-- **Database:** PostgreSQL
-- **Hosting:** Render (for backend deployment)
+- **Backend:** Node.js, Express.js  
+- **Database:** PostgreSQL  
+- **Frontend:** React
+- **Hosting (Backend):** [Render](https://render.com)  
+- **Hosting (Frontend):** [Vercel](https://vercel.com)
 
 ## 🚀 **Backend URL**
 
 [https://tinypath-r207.onrender.com](https://tinypath-r207.onrender.com)
+
+⚠️ **Caution:**  
+Since the backend is deployed on Render, the first request may take a few seconds to respond due to cold starts.
 
 - For URL details, encode the URL first before sending it in the GET request.
 - Example for `longUrl`:
@@ -34,6 +55,14 @@
     ```plaintext
     GET https://tinypath-r207.onrender.com/details/https%3A%2F%2Fgithub.com
     ```
+
+## 🌐 **Frontend URL**  
+**Deployed on Vercel**
+
+[https://tiny-path-iota.vercel.app](https://tiny-path-iota.vercel.app)
+
+The frontend interacts with the backend to provide the URL shortening, redirection, and analytics functionalities.
+
 
 
 ## 📄 **API Documentation with Examples**
@@ -116,6 +145,75 @@
   ```
 
 
+
+## 🛠️ **Running the Project Locally**
+
+Follow these steps to set up and run the project on your local machine.
+
+### **1. Clone the Repository**  
+First, clone the repository to your local machine:
+
+```bash
+git clone https://github.com/ellvius/tiny-path.git
+```
+
+### **2. Install Dependencies**  
+
+Navigate to the project folder and install the required dependencies:
+```bash
+cd tiny-path
+```
+
+For the Frontend (Vite):
+```bash
+cd frontend
+npm install
+```
+
+For the Backend (Node.js + Express):
+```bash
+cd ../backend
+npm install
+```
+
+### **3. Set Environment Variables**  
+
+Create a .env file in the root folder of both the Frontend and Backend, and add the following environment variables:
+#### For the Frontend (/frontend/.env)
+```ini
+VITE_API_URL=http://localhost:5000
+```
+
+#### For the Backend (/backend/.env)
+```ini
+HOST_URL=http://localhost:5000
+DATABASE_URL=your-postgres-connection-string
+PORT=5000
+REDIRECT_SITE=https://google.com
+```
+
+### 4. Run the Backend Server
+
+Start the backend server:
+
+```bash
+cd backend
+nodemon src/server.js
+```
+- The backend should run on [http://localhost:5000](http://localhost:5000).
+
+
+### 5. Run the Frontend Application
+
+Start the frontend application:
+
+```bash
+cd ../frontend
+npm run dev
+```
+- The backend should run on [http://localhost:5173](http://localhost:5173).
+
+
 ## 💡 **Special Features**
 
 ### Monetization via Advertisements
@@ -124,4 +222,3 @@
 ### Rate Limiting
 - Prevent users from making more than 20 requests per day for a specific short URL.
 - Logic implemented via `request_count` and `last_request_time` fields in the database.
-

@@ -1,16 +1,37 @@
 import React from "react";
-import UrlInput from "./components/UrlInput";
+import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
+import Shorten from "./components/Shorten";
+import Details from "./components/Details";
+import TopUrls from "./components/TopUrls";
+import LandingPage from "./components/LandingPage";
+import Header from "./components/Header";
+import Navbar from "./components/Navbar";
 
-function App() {
+const AppContent = () => {
+  const location = useLocation();
+
   return (
-    <main className="min-h-screen bg-secondary">
-        <h1 className="text-primary font-bold text-7xl p-12 pb-0 text-center">CLINK</h1>
-        <p className="p-8 text-center text-primary font-semibold">Welcome to your URL shortener app!</p>
-      <div className="flex justify-center p-12">
-        <UrlInput />
-      </div>
-    </main>
+    <div className="min-h-screen bg-secondary">
+      {location.pathname !== "/" && <Navbar />}
+      {(location.pathname !== "/details" && location.pathname !== "/topurls") && <Header />}
+      <main>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/shorten" element={<Shorten />} />
+          <Route path="/details" element={<Details />} />
+          <Route path="/topurls" element={<TopUrls />} />
+        </Routes>
+      </main>
+    </div>
   );
-}
+};
+
+const App = () => {
+  return (
+    <Router>
+      <AppContent />
+    </Router>
+  );
+};
 
 export default App;

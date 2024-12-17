@@ -13,6 +13,7 @@ export const shortenUrl = async (req, res) => {
     const shortUrl = generateShortUrl();
     const newUrl = await insertUrl(longUrl, shortUrl);
     res.status(201).json({ shortUrl: `${process.env.HOST_URL}/redirect/${newUrl.short_url}` });
+    console.log(`Shortened URL successfully created for: ${longUrl} -> ${shortUrl}`);
   } catch (err) {
     console.error('Error creating short URL:', err.message);
     res.status(500).json({ error: 'Internal Server Error' });
@@ -33,6 +34,7 @@ export const redirectToLongUrl = async (req, res) => {
       return res.redirect(process.env.REDIRECT_SITE);
     }
 
+    console.log(`Redirected short URL (${shortUrl}) to long URL (${longUrl})`);
     res.redirect(urlData.long_url);
   } catch (err) {
     console.error('Error redirecting:', err.message);
@@ -56,6 +58,7 @@ export const getUrlDetails = async (req, res) => {
         return res.status(404).json({ error: 'Short URL not found' });
       }
 
+      console.log(`Details fetched for URL: ${url}. Total hits: ${hitCount}`);
       return res.status(200).json({
         longUrl: shortUrlData.long_url,
         shortUrl: `${process.env.HOST_URL}/${shortUrl}`,
@@ -102,6 +105,7 @@ export const getTopUrls = async (req, res) => {
       hitCount: url.hit_count,
     }));
 
+    console.log(`Top ${number} URLs fetched based on hit counts.`);
     res.status(200).json(response);
   } catch (err) {
     console.error('Error fetching top URLs:', err.message);

@@ -70,4 +70,49 @@ export const fetchTopUrls = async (topNumber) => {
       return [];
     }
   };
+
+export const getRateLimitData = async (shortUrl) => {
+const query = `
+    SELECT long_url, hit_count, request_count, last_request_time
+    FROM urls
+    WHERE short_url = $1;
+`;
+
+const result = await pool.query(query, [shortUrl]);
+return result.rows[0]; 
+};
+
+export const increaseRequestCount = async (shortUrl) => {
+    const query = `
+        UPDATE urls SET request_count = request_count + 1
+        WHERE short_url = $1
+        RETURNING request_count;
+    `;
+
+    const result = await pool.query(query, [shortUrl]);
+    return result.rows[0].request_count;
+}
+  
+export const resetRateLimitData = async (shortUrl, timestamp) => {
+  const query = `
+    UPDATE urls
+    SET 
+        request_count = 1,
+        last_request_time = $1
+    WHERE short_url = $2
+    RETURNING request_count, last_request_time;
+  `;
+
+  const values = [timestamp, shortUrl];
+
+  try {
+    const result = await pool.query(query, values);
+    return result.rows[0]; 
+  } catch (err) {
+    console.error('Error updating rate limit data:', err.message);
+    throw err;
+  }
+};
+
+
   

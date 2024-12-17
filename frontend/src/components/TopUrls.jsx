@@ -14,7 +14,8 @@ const TopUrls = () => {
     }
   };
 
-  const handleSearch = () => {
+  const handleSearch = (event) => {
+    event.preventDefault();
     fetchTopUrls(numUrls);
   };
 
@@ -24,7 +25,7 @@ const TopUrls = () => {
         Top URLs
       </h2>
 
-      <div className="flex items-center my-4">
+      <form className="flex items-center my-4" onSubmit={handleSearch}>
         <input
           type="number"
           min="1"
@@ -34,12 +35,12 @@ const TopUrls = () => {
           className="p-2 font-semibold"
         />
         <button
-          onClick={handleSearch}
+          type="submit"
           className="bg-primary text-secondary font-extrabold p-2 border border-secondary transform transition-transform active:scale-95 active:shadow-inner"
         >
           Search
         </button>
-      </div>
+      </form>
 
       <ul className="mt-2 p-2">
         {topUrls.map((url, index) => (

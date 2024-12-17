@@ -73,7 +73,7 @@ export const getUrlDetails = async (req, res) => {
 
       return res.status(200).json({
         longUrl: url,
-        shortUrl: `${process.env.HOST_URL}/${longUrlData.rows[0].short_url}`,
+        shortUrl: `${process.env.HOST_URL}/redirect/${longUrlData.rows[0].short_url}`,
         hitCount: longUrlData.rows[0].hit_count,
       });
     }

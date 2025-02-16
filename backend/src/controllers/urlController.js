@@ -7,12 +7,12 @@ export const shortenUrl = async (req, res) => {
   try {
     const existingUrl = await getExistingLongUrl(longUrl);
     if (existingUrl.rows.length > 0) {
-      return res.status(200).json({ shortUrl: `${process.env.HOST_URL}/redirect/${existingUrl.rows[0].short_url}` });
+      return res.status(200).json({ shortUrl: `${process.env.HOST_URL}/${existingUrl.rows[0].short_url}` });
     }
 
     const shortUrl = generateShortUrl();
     const newUrl = await insertUrl(longUrl, shortUrl);
-    res.status(201).json({ shortUrl: `${process.env.HOST_URL}/redirect/${newUrl.short_url}` });
+    res.status(201).json({ shortUrl: `${process.env.HOST_URL}/${newUrl.short_url}` });
     console.log(`Shortened URL successfully created for: ${longUrl} -> ${shortUrl}`);
   } catch (err) {
     console.error('Error creating short URL:', err.message);
@@ -47,10 +47,10 @@ export const getUrlDetails = async (req, res) => {
   console.log(url);
 
   try {
-    const isShortUrl = url.startsWith(process.env.HOST_URL+"/redirect/");
+    const isShortUrl = url.startsWith(process.env.HOST_URL);
 
     if (isShortUrl) {
-      const shortUrl = url.replace(process.env.HOST_URL+"/redirect/", '');
+      const shortUrl = url.replace(process.env.HOST_URL, '');
 
       const shortUrlData = await getShortUrl(shortUrl);
 
@@ -73,7 +73,7 @@ export const getUrlDetails = async (req, res) => {
 
       return res.status(200).json({
         longUrl: url,
-        shortUrl: `${process.env.HOST_URL}/redirect/${longUrlData.rows[0].short_url}`,
+        shortUrl: `${process.env.HOST_URL}/${longUrlData.rows[0].short_url}`,
         hitCount: longUrlData.rows[0].hit_count,
       });
     }
@@ -100,7 +100,7 @@ export const getTopUrls = async (req, res) => {
 
     const response = topUrls.map((url, index) => ({
       rank: index + 1,
-      shortUrl: `${process.env.HOST_URL}/redirect/${url.short_url}`,
+      shortUrl: `${process.env.HOST_URL}/${url.short_url}`,
       longUrl: url.long_url,
       hitCount: url.hit_count,
     }));

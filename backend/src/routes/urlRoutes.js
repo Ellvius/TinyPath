@@ -5,7 +5,7 @@ import { rateLimitMiddleware } from '../middlewares/rateLimiter.js';
 const router = express.Router();
 
 router.post('/shorten', shortenUrl);
-router.get('/redirect/:shortUrl', rateLimitMiddleware, redirectToLongUrl);
+router.get('/:shortUrl', rateLimitMiddleware, redirectToLongUrl);
 router.get('/details/:url', getUrlDetails);
 router.get('/top/:number', getTopUrls)
 
